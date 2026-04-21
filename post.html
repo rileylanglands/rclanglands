@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Journal — R.C. Langlands</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">R.C. Langlands</a>
+  <ul class="nav-links">
+    <li><a href="index.html#books">Books</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#journal">Journal</a></li>
+  </ul>
+  <a href="index.html#newsletter" class="nav-cta">Stay in the loop</a>
+</nav>
+
+<div id="post-content">
+  <!-- Loaded dynamically -->
+</div>
+
+<footer>
+  <div class="footer-brand">R.C. Langlands</div>
+  <div class="footer-links">
+    <a href="#">Instagram</a>
+    <a href="#">Goodreads</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 R.C. Langlands. All rights reserved.</div>
+</footer>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+
+  fetch('posts/posts.json')
+    .then(r => r.json())
+    .then(posts => {
+      const post = posts.find(p => p.id === id && p.published);
+      if (!post) {
+        document.getElementById('post-content').innerHTML = `
+          <div class="post-hero">
+            <p style="color:rgba(168,201,172,0.6); font-family: var(--sans); font-size:14px;">Post not found.</p>
+          </div>`;
+        return;
+      }
+
+      document.title = `${post.title} — R.C. Langlands`;
+
+      const paragraphs = post.content
+        .split('\n\n')
+        .filter(p => p.trim())
+        .map(p => `<p>${p.trim()}</p>`)
+        .join('\n');
+
+      document.getElementById('post-content').innerHTML = `
+        <div class="post-hero">
+          <div class="post-tag">${post.tag}</div>
+          <h1 class="post-title">${post.title}</h1>
+          <div class="post-date">${formatDate(post.date)}</div>
+        </div>
+        <div class="post-body">
+          <a href="index.html#journal" class="back-link">← Back to journal</a>
+          ${paragraphs}
+        </div>
+      `;
+    })
+    .catch(() => {
+      document.getElementById('post-content').innerHTML = `
+        <div class="post-hero">
+          <p style="color:rgba(168,201,172,0.6);">Unable to load post.</p>
+        </div>`;
+    });
+
+  function formatDate(d) {
+    return new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+</script>
+
+</body>
+</html>

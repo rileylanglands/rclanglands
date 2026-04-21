@@ -1,9 +1,411 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Admin</title>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  </head>
-  <body></body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — R.C. Langlands</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #f4efe6; --cream-deep: #e8e0d0; --parchment: #d6cab4;
+      --forest-darkest: #1a2e1e; --forest-dark: #243d28; --forest: #345c3a;
+      --forest-mid: #4a7a52; --forest-light: #6a9e72; --forest-pale: #a8c9ac;
+      --forest-mist: #d4e8d6; --moss: #5a7a5e; --bark: #6b4c32;
+      --ink: #1a1a14; --ink-muted: #3a3028; --ink-soft: #6a5e50;
+      --serif: 'Playfair Display', Georgia, serif;
+      --body: 'Lora', Georgia, serif;
+      --sans: 'Nunito Sans', sans-serif;
+      --red: #c0392b; --red-light: #f9ebea;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: #f0ece4; color: var(--ink); min-height: 100vh; }
+
+    /* LOGIN */
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: var(--forest-darkest);
+    }
+    .login-box {
+      background: var(--forest-dark); border: 1px solid rgba(168,201,172,0.15);
+      border-radius: 12px; padding: 3rem 2.5rem; width: 100%; max-width: 380px; text-align: center;
+    }
+    .login-logo { font-family: var(--serif); font-size: 22px; color: var(--forest-pale); margin-bottom: 0.3rem; }
+    .login-sub { font-size: 12px; color: rgba(168,201,172,0.4); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2.5rem; }
+    .login-box label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(168,201,172,0.6); margin-bottom: 0.5rem; text-align: left; }
+    .login-box input[type="password"] {
+      width: 100%; padding: 0.75rem 1rem; border-radius: 6px;
+      border: 1.5px solid rgba(168,201,172,0.2); background: rgba(168,201,172,0.06);
+      color: var(--forest-mist); font-family: var(--body); font-size: 15px; outline: none;
+      margin-bottom: 1.25rem;
+    }
+    .login-box input[type="password"]:focus { border-color: rgba(168,201,172,0.5); }
+    .login-btn {
+      width: 100%; padding: 0.75rem; background: var(--forest-mid); color: var(--cream);
+      font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s;
+    }
+    .login-btn:hover { background: var(--forest-light); }
+    .login-error { font-size: 13px; color: #e88; margin-top: 0.75rem; display: none; }
+
+    /* ADMIN LAYOUT */
+    #admin-screen { display: none; }
+    .admin-nav {
+      background: var(--forest-darkest); padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(168,201,172,0.12); position: sticky; top: 0; z-index: 50;
+    }
+    .admin-nav-logo { font-family: var(--serif); font-size: 18px; color: var(--forest-pale); }
+    .admin-nav-logo span { font-size: 12px; font-family: var(--sans); color: rgba(168,201,172,0.35); margin-left: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .admin-nav-right { display: flex; gap: 1rem; align-items: center; }
+    .nav-btn { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.45rem 1rem; border-radius: 4px; cursor: pointer; transition: all 0.2s; border: none; }
+    .nav-btn.outline { background: transparent; color: rgba(168,201,172,0.5); border: 1px solid rgba(168,201,172,0.2); }
+    .nav-btn.outline:hover { color: var(--forest-pale); border-color: rgba(168,201,172,0.5); }
+    .nav-btn.primary { background: var(--forest-mid); color: var(--cream); }
+    .nav-btn.primary:hover { background: var(--forest-light); }
+    .nav-btn.danger { background: transparent; color: rgba(220,100,100,0.6); border: 1px solid rgba(220,100,100,0.2); }
+    .nav-btn.danger:hover { color: #e88; border-color: rgba(220,100,100,0.5); }
+
+    .admin-body { display: grid; grid-template-columns: 300px 1fr; min-height: calc(100vh - 57px); }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: white; border-right: 1px solid var(--parchment);
+      display: flex; flex-direction: column;
+    }
+    .sidebar-header {
+      padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--parchment);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .sidebar-title { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+    .new-post-btn {
+      font-family: var(--sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      background: var(--forest-mid); color: white;
+      padding: 0.4rem 0.85rem; border-radius: 4px; border: none; cursor: pointer; transition: background 0.2s;
+    }
+    .new-post-btn:hover { background: var(--forest-light); }
+    .post-list { flex: 1; overflow-y: auto; }
+    .post-item {
+      padding: 1rem 1.5rem; border-bottom: 1px solid #f0ece4;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .post-item:hover { background: #f8f4ee; }
+    .post-item.active { background: var(--forest-mist); border-left: 3px solid var(--forest-mid); }
+    .post-item-title { font-family: var(--serif); font-size: 15px; color: var(--ink); margin-bottom: 0.3rem; line-height: 1.3; }
+    .post-item-meta { font-size: 11px; color: var(--ink-soft); display: flex; gap: 0.6rem; align-items: center; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+    .status-dot.published { background: var(--forest-mid); }
+    .status-dot.draft { background: var(--bark); }
+
+    /* EDITOR */
+    .editor-panel { padding: 2.5rem 3rem; overflow-y: auto; }
+    .editor-empty {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 60vh; color: var(--ink-soft); text-align: center;
+    }
+    .editor-empty-icon { font-size: 48px; margin-bottom: 1rem; opacity: 0.3; }
+    .editor-empty p { font-size: 15px; line-height: 1.6; max-width: 300px; }
+
+    .editor-form { max-width: 720px; }
+    .form-row { margin-bottom: 1.5rem; }
+    .form-row label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.5rem; }
+    .form-row input[type="text"],
+    .form-row input[type="date"],
+    .form-row select {
+      width: 100%; padding: 0.7rem 1rem; border-radius: 6px;
+      border: 1.5px solid var(--parchment); background: white;
+      font-family: var(--body); font-size: 15px; color: var(--ink); outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-row input:focus, .form-row select:focus { border-color: var(--forest-mid); }
+    .form-row textarea {
+      width: 100%; padding: 1rem; border-radius: 6px;
+      border: 1.5px solid var(--parchment); background: white;
+      font-family: var(--body); font-size: 15.5px; color: var(--ink-muted);
+      line-height: 1.85; outline: none; resize: vertical; min-height: 180px;
+      transition: border-color 0.2s;
+    }
+    .form-row textarea:focus { border-color: var(--forest-mid); }
+    #content-editor { min-height: 320px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .editor-actions {
+      display: flex; gap: 1rem; align-items: center; padding-top: 1rem;
+      border-top: 1px solid var(--parchment); margin-top: 0.5rem; flex-wrap: wrap;
+    }
+    .save-btn {
+      font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.65rem 1.4rem; border-radius: 5px; border: none; cursor: pointer; transition: all 0.2s;
+    }
+    .save-btn.publish { background: var(--forest-mid); color: white; }
+    .save-btn.publish:hover { background: var(--forest-light); }
+    .save-btn.draft { background: var(--cream-deep); color: var(--ink-muted); }
+    .save-btn.draft:hover { background: var(--parchment); }
+    .delete-btn {
+      font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.65rem 1.2rem; border-radius: 5px; border: 1.5px solid rgba(192,57,43,0.25);
+      background: transparent; color: var(--red); cursor: pointer; transition: all 0.2s; margin-left: auto;
+    }
+    .delete-btn:hover { background: var(--red-light); }
+    .save-status { font-size: 12px; color: var(--forest-mid); }
+
+    /* INSTRUCTIONS PANEL */
+    .instructions {
+      background: var(--forest-darkest); color: var(--forest-pale);
+      padding: 2rem; border-radius: 10px; margin-bottom: 2.5rem; max-width: 720px;
+    }
+    .instructions h3 { font-family: var(--serif); font-size: 18px; font-weight: 400; color: var(--forest-mist); margin-bottom: 1rem; }
+    .instructions ol { padding-left: 1.25rem; }
+    .instructions li { font-size: 13.5px; line-height: 1.75; color: rgba(168,201,172,0.7); margin-bottom: 0.5rem; }
+    .instructions li strong { color: var(--forest-pale); }
+    .instructions code { background: rgba(168,201,172,0.1); padding: 1px 6px; border-radius: 3px; font-size: 12px; color: var(--forest-pale); }
+    .toggle-instructions { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(168,201,172,0.4); background: none; border: none; cursor: pointer; margin-bottom: 1rem; padding: 0; }
+    .toggle-instructions:hover { color: var(--forest-pale); }
+
+    @media (max-width: 768px) {
+      .admin-body { grid-template-columns: 1fr; }
+      .sidebar { max-height: 40vh; }
+      .editor-panel { padding: 1.5rem; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">R.C. Langlands</div>
+    <div class="login-sub">Journal Admin</div>
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter your password" onkeydown="if(event.key==='Enter')login()" />
+    <button class="login-btn" onclick="login()">Sign in</button>
+    <div class="login-error" id="login-error">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <div class="admin-nav">
+    <div class="admin-nav-logo">R.C. Langlands <span>Journal Admin</span></div>
+    <div class="admin-nav-right">
+      <a href="../index.html" target="_blank" class="nav-btn outline">View site ↗</a>
+      <button class="nav-btn danger" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">Posts</div>
+        <button class="new-post-btn" onclick="newPost()">+ New post</button>
+      </div>
+      <div class="post-list" id="post-list"></div>
+    </div>
+
+    <div class="editor-panel" id="editor-panel">
+      <div class="editor-empty" id="editor-empty">
+        <div class="editor-empty-icon">✦</div>
+        <p>Select a post to edit, or create a new one.</p>
+      </div>
+      <div id="editor-form-wrap" style="display:none;">
+
+        <button class="toggle-instructions" onclick="toggleInstructions()">↕ How to publish posts</button>
+        <div class="instructions" id="instructions" style="display:none;">
+          <h3>How publishing works</h3>
+          <ol>
+            <li>Write or edit your post using the form below.</li>
+            <li>Click <strong>Save as draft</strong> to save without publishing, or <strong>Publish</strong> to make it live.</li>
+            <li>Click <strong>Download posts.json</strong> in the top bar to download your updated posts file.</li>
+            <li>Go to your GitHub repository and navigate to <code>posts/posts.json</code>.</li>
+            <li>Click the pencil icon to edit, then paste in the new file content and commit the change.</li>
+            <li>Netlify will automatically redeploy your site within about 30 seconds.</li>
+          </ol>
+        </div>
+
+        <div class="editor-form" id="editor-form">
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="f-title">Post title</label>
+              <input type="text" id="f-title" placeholder="Your journal post title" />
+            </div>
+            <div class="form-row">
+              <label for="f-tag">Category</label>
+              <select id="f-tag">
+                <option>Writing life</option>
+                <option>Process</option>
+                <option>Books I love</option>
+                <option>The Seasons series</option>
+                <option>Notes from the classroom</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="f-preview">Preview text <span style="font-weight:400;text-transform:none;letter-spacing:0">(shown on homepage — 1–2 sentences)</span></label>
+            <textarea id="f-preview" rows="2" placeholder="A short teaser that appears on the journal index..."></textarea>
+          </div>
+          <div class="form-row">
+            <label for="f-content">Post content <span style="font-weight:400;text-transform:none;letter-spacing:0">(separate paragraphs with a blank line)</span></label>
+            <textarea id="f-content" id="content-editor" rows="16" placeholder="Write your post here...
+
+Separate paragraphs with a blank line — each blank line becomes a new paragraph on the site.
+
+Take your time. This is your space."></textarea>
+          </div>
+          <div class="form-row">
+            <label for="f-date">Date</label>
+            <input type="date" id="f-date" />
+          </div>
+          <div class="editor-actions">
+            <button class="save-btn publish" onclick="savePost(true)">Publish</button>
+            <button class="save-btn draft" onclick="savePost(false)">Save as draft</button>
+            <span class="save-status" id="save-status"></span>
+            <button class="delete-btn" onclick="deletePost()">Delete post</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── PASSWORD ──
+  // Change this to your own password
+  const ADMIN_PASSWORD = 'seasons2026';
+
+  let posts = [];
+  let activeId = null;
+
+  function login() {
+    const pw = document.getElementById('password').value;
+    if (pw === ADMIN_PASSWORD) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-screen').style.display = 'block';
+      loadPosts();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  }
+
+  function logout() {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('admin-screen').style.display = 'none';
+    document.getElementById('password').value = '';
+  }
+
+  // ── LOAD POSTS ──
+  function loadPosts() {
+    fetch('../posts/posts.json?nocache=' + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        posts = data;
+        renderSidebar();
+      })
+      .catch(() => {
+        posts = [];
+        renderSidebar();
+      });
+  }
+
+  // ── SIDEBAR ──
+  function renderSidebar() {
+    const list = document.getElementById('post-list');
+    if (posts.length === 0) {
+      list.innerHTML = '<div style="padding:1.5rem;font-size:13px;color:var(--ink-soft);">No posts yet. Create your first one.</div>';
+      return;
+    }
+    list.innerHTML = posts.map(p => `
+      <div class="post-item ${p.id === activeId ? 'active' : ''}" onclick="selectPost('${p.id}')">
+        <div class="post-item-title">${p.title}</div>
+        <div class="post-item-meta">
+          <span class="status-dot ${p.published ? 'published' : 'draft'}"></span>
+          <span>${p.published ? 'Published' : 'Draft'}</span>
+          <span>·</span>
+          <span>${formatDate(p.date)}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function selectPost(id) {
+    activeId = id;
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+    document.getElementById('editor-empty').style.display = 'none';
+    document.getElementById('editor-form-wrap').style.display = 'block';
+    document.getElementById('f-title').value = post.title;
+    document.getElementById('f-tag').value = post.tag;
+    document.getElementById('f-preview').value = post.preview;
+    document.getElementById('f-content').value = post.content;
+    document.getElementById('f-date').value = post.date;
+    document.getElementById('save-status').textContent = '';
+    renderSidebar();
+  }
+
+  function newPost() {
+    const id = 'post-' + Date.now();
+    const today = new Date().toISOString().split('T')[0];
+    const newP = { id, title: 'New post', tag: 'Writing life', date: today, preview: '', content: '', published: false };
+    posts.unshift(newP);
+    renderSidebar();
+    selectPost(id);
+  }
+
+  function savePost(publish) {
+    if (!activeId) return;
+    const idx = posts.findIndex(p => p.id === activeId);
+    if (idx === -1) return;
+
+    const title = document.getElementById('f-title').value.trim();
+    if (!title) { alert('Please add a title before saving.'); return; }
+
+    posts[idx] = {
+      ...posts[idx],
+      title,
+      tag: document.getElementById('f-tag').value,
+      preview: document.getElementById('f-preview').value.trim(),
+      content: document.getElementById('f-content').value.trim(),
+      date: document.getElementById('f-date').value,
+      published: publish
+    };
+
+    renderSidebar();
+    const status = document.getElementById('save-status');
+    status.textContent = publish ? '✓ Published (download to go live)' : '✓ Saved as draft';
+    setTimeout(() => status.textContent = '', 4000);
+
+    // Prompt download
+    downloadJSON();
+  }
+
+  function deletePost() {
+    if (!activeId) return;
+    if (!confirm('Delete this post? This cannot be undone.')) return;
+    posts = posts.filter(p => p.id !== activeId);
+    activeId = null;
+    renderSidebar();
+    document.getElementById('editor-empty').style.display = 'flex';
+    document.getElementById('editor-form-wrap').style.display = 'none';
+    downloadJSON();
+  }
+
+  function downloadJSON() {
+    const blob = new Blob([JSON.stringify(posts, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'posts.json'; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function toggleInstructions() {
+    const el = document.getElementById('instructions');
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function formatDate(d) {
+    return new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+</script>
+
+</body>
 </html>
