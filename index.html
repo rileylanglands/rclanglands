@@ -175,6 +175,24 @@
     `).join('');
   });
 
+  fetch('content/site.json')
+  .then(res => res.json())
+  .then(data => {
+
+    // HERO
+    document.getElementById('heroEyebrow').textContent = data.hero.eyebrow;
+    document.getElementById('heroTitle').textContent = data.hero.title;
+    document.getElementById('heroTagline').textContent = data.hero.tagline;
+    document.getElementById('heroDesc').textContent = data.hero.description;
+
+    // ABOUT
+    document.getElementById('about1').textContent = data.about[0];
+    document.getElementById('about2').textContent = data.about[1];
+    document.getElementById('about3').textContent = data.about[2];
+
+  })
+  .catch(err => console.log("Site content failed", err));
+
 
   function formatDate(d) {
     return new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
