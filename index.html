@@ -11,7 +11,7 @@
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">R.C. Langlands</a>
+  <a href="index.html" class="nav-logo" id="siteTitle"></a>
   <ul class="nav-links">
     <li><a href="#books">Books</a></li>
     <li><a href="#about">About</a></li>
@@ -23,9 +23,9 @@
 <div class="hero">
   <div class="hero-left">
     <div class="hero-eyebrow">Middle grade fiction · Queensland, Australia</div>
-    <h1 class="hero-name">R.C. Langlands</h1>
-    <div class="hero-tagline-title">Stories that take root</div>
-    <p class="hero-desc">Adventure, wonder, and the kind of friendships that last a lifetime — for readers aged 8 to 12.</p>
+    <h1 class="hero-name" id="heroTitle"></h1>
+<div class="hero-tagline-title" id="heroTagline"></div>
+<p class="hero-desc" id="heroDesc"></p>
     <div class="hero-btns">
       <a href="#books" class="btn-primary">The Seasons series</a>
       <a href="#about" class="btn-ghost">About the author</a>
@@ -115,9 +115,9 @@
     <div class="section-label">About the author</div>
     <h2 class="section-title">R.C. Langlands</h2>
     <div class="divider"></div>
-    <p>I'm a teacher and writer based in Queensland, Australia, with a deep love for literature, storytelling, and the particular magic of middle grade fiction — that age when books can genuinely shape who you become.</p>
-    <p>I've spent years in classrooms nurturing a love of reading in young people. Now I'm writing the kind of stories I always wanted to hand them — full of heart, adventure, and landscapes that feel alive.</p>
-    <p>When I'm not writing or teaching, I'm thinking about sustainable homes, good hospitality, and the way a well-designed space can change how people feel inside it.</p>
+    <p id="about1"></p>
+<p id="about2"></p>
+<p id="about3"></p>
     <a href="#newsletter" class="btn-primary">Follow the journey</a>
   </div>
 </section>
@@ -159,10 +159,12 @@
     .then(posts => {
       const grid = document.getElementById('journal-grid');
       const published = posts.filter(p => p.published);
+
       if (published.length === 0) {
         grid.innerHTML = '<p style="color:rgba(168,201,172,0.5); font-family: var(--body); font-size:15px;">Posts coming soon.</p>';
         return;
       }
+
       grid.innerHTML = published.map(p => `
         <a href="post.html?id=${p.id}" class="journal-card">
           <div class="journal-tag">${p.tag}</div>
@@ -175,6 +177,31 @@
     .catch(() => {
       document.getElementById('journal-grid').innerHTML = '<p style="color:rgba(168,201,172,0.5);">Posts coming soon.</p>';
     });
+
+
+  // Load main site content (hero + about)
+  fetch('content/site.json')
+    .then(res => res.json())
+    .then(data => {
+
+      // HERO
+      document.getElementById('heroTitle').textContent = data.hero.title;
+      document.getElementById('heroTagline').textContent = data.hero.tagline;
+      document.getElementById('heroDesc').textContent = data.hero.description;
+
+      // ABOUT
+      document.getElementById('about1').textContent = data.about[0];
+      document.getElementById('about2').textContent = data.about[1];
+      document.getElementById('about3').textContent = data.about[2];
+
+      // Optional: site title in nav (you have this ID already)
+      document.getElementById('siteTitle').textContent = data.hero.title;
+
+    })
+    .catch(err => {
+      console.log("Site content failed to load", err);
+    });
+
 
   function formatDate(d) {
     return new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
