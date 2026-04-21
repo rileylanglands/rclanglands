@@ -52,59 +52,7 @@
   <div class="divider"></div>
   <p class="books-intro">The Seasons series follows one extraordinary journey told across four books — each one named for a season, each one a world of its own.</p>
   <div class="books-grid">
-    <div class="book-card">
-      <div class="book-cover spring">
-        <div class="cover-texture"></div>
-        <div class="cover-season">Spring</div>
-        <div class="cover-tag">Book one · Cover coming soon</div>
-      </div>
-      <div class="book-body">
-        <div class="book-season-label">Book one — Spring</div>
-        <div class="book-title">Title to be revealed</div>
-        <p class="book-desc">Where everything begins — a young adventurer, a hidden world, and a secret that changes everything they knew about home.</p>
-        <span class="book-status status-wip">In progress</span>
-      </div>
-    </div>
-    <div class="book-card">
-      <div class="book-cover summer">
-        <div class="cover-texture"></div>
-        <div class="cover-season">Summer</div>
-        <div class="cover-tag">Book two · Coming soon</div>
-      </div>
-      <div class="book-body">
-        <div class="book-season-label">Book two — Summer</div>
-        <div class="book-title">Coming soon</div>
-        <p class="book-desc">The journey deepens — further from home, closer to the truth, with the heat of summer pressing in on every side.</p>
-        <span class="book-status status-planned">Planned</span>
-      </div>
-    </div>
-    <div class="book-card">
-      <div class="book-cover autumn">
-        <div class="cover-texture"></div>
-        <div class="cover-season">Autumn</div>
-        <div class="cover-tag">Book three · Coming soon</div>
-      </div>
-      <div class="book-body">
-        <div class="book-season-label">Book three — Autumn</div>
-        <div class="book-title">Coming soon</div>
-        <p class="book-desc">Things begin to fall — and what remains is what matters most. The story turns darker, and the stakes rise.</p>
-        <span class="book-status status-planned">Planned</span>
-      </div>
-    </div>
-    <div class="book-card">
-      <div class="book-cover winter">
-        <div class="cover-texture"></div>
-        <div class="cover-season">Winter</div>
-        <div class="cover-tag">Book four · Coming soon</div>
-      </div>
-      <div class="book-body">
-        <div class="book-season-label">Book four — Winter</div>
-        <div class="book-title">Coming soon</div>
-        <p class="book-desc">The final season. An ending worth waiting for — and a beginning that never really ends.</p>
-        <span class="book-status status-planned">Planned</span>
-      </div>
-    </div>
-  </div>
+    <div class="books-grid" id="books-grid"></div>
 </section>
 
 <section id="about">
@@ -201,6 +149,31 @@
     .catch(err => {
       console.log("Site content failed to load", err);
     });
+
+  fetch('content/books.json')
+  .then(res => res.json())
+  .then(data => {
+    const grid = document.getElementById('books-grid');
+
+    grid.innerHTML = data.books.map(book => `
+      <div class="book-card">
+        <div class="book-cover ${book.coverClass}">
+          <div class="cover-texture"></div>
+          <div class="cover-season">${book.season}</div>
+          <div class="cover-tag">${book.tag}</div>
+        </div>
+
+        <div class="book-body">
+          <div class="book-season-label">${book.label}</div>
+          <div class="book-title">${book.title}</div>
+          <p class="book-desc">${book.description}</p>
+          <span class="book-status status-${book.status}">
+            ${book.status === "wip" ? "In progress" : "Planned"}
+          </span>
+        </div>
+      </div>
+    `).join('');
+  });
 
 
   function formatDate(d) {
