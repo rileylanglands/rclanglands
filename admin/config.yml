@@ -6,6 +6,15 @@ media_folder: "images/uploads"
 public_folder: "/images/uploads"
 
 collections:
+- name: home
+  label: Homepage
+  files:
+    - file: content/home.md
+      label: Homepage Text
+      name: home
+      fields:
+        - { label: Title, name: title, widget: string }
+        - { label: Bio, name: bio, widget: text }
   - name: "blog"
     label: "Blog Posts"
     folder: "blog"
