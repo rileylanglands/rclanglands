@@ -1,12 +1,13 @@
 {
   "hero": {
+    "eyebrow": "Middle grade fiction · Queensland, Australia",
     "title": "R.C. Langlands",
     "tagline": "Stories shaped by seasons",
     "description": "Middle grade fiction from Queensland, Australia"
   },
   "about": [
-    "Paragraph one about the author...",
-    "Paragraph two...",
-    "Paragraph three..."
+    "Paragraph one about the author goes here.",
+    "Paragraph two about writing style, inspiration, or background.",
+    "Paragraph three about themes, books, or creative direction."
   ]
 }
