@@ -1,0 +1,40 @@
+{
+  "books": [
+    {
+      "season": "Spring",
+      "label": "Book one — Spring",
+      "title": "Title to be revealed",
+      "description": "Where everything begins — a young adventurer, a hidden world, and a secret that changes everything they knew about home.",
+      "status": "wip",
+      "coverClass": "spring",
+      "tag": "Book one · Cover coming soon"
+    },
+    {
+      "season": "Summer",
+      "label": "Book two — Summer",
+      "title": "Coming soon",
+      "description": "The journey deepens — further from home, closer to the truth, with the heat of summer pressing in on every side.",
+      "status": "planned",
+      "coverClass": "summer",
+      "tag": "Book two · Coming soon"
+    },
+    {
+      "season": "Autumn",
+      "label": "Book three — Autumn",
+      "title": "Coming soon",
+      "description": "Things begin to fall — and what remains is what matters most. The story turns darker, and the stakes rise.",
+      "status": "planned",
+      "coverClass": "autumn",
+      "tag": "Book three · Coming soon"
+    },
+    {
+      "season": "Winter",
+      "label": "Book four — Winter",
+      "title": "Coming soon",
+      "description": "The final season. An ending worth waiting for — and a beginning that never really ends.",
+      "status": "planned",
+      "coverClass": "winter",
+      "tag": "Book four · Coming soon"
+    }
+  ]
+}
