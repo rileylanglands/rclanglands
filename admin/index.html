@@ -246,9 +246,13 @@
             <label for="f-preview">Preview text <span style="font-weight:400;text-transform:none;letter-spacing:0">(shown on homepage — 1–2 sentences)</span></label>
             <textarea id="f-preview" rows="2" placeholder="A short teaser that appears on the journal index..."></textarea>
           </div>
-          <div class="form-row">
-            <label for="f-content">Post content <span style="font-weight:400;text-transform:none;letter-spacing:0">(separate paragraphs with a blank line)</span></label>
-            <textarea id="f-content" id="content-editor" rows="16" placeholder="Write your post here...
+     <div class="form-row">
+  <label for="f-content">Post content <span style="font-weight:400;text-transform:none;letter-spacing:0">(separate paragraphs with a blank line — select text and click B or I to format it)</span></label>
+  <div class="editor-toolbar" style="margin-bottom:6px;">
+    <button type="button" onclick="wrapSelection('**')" style="font-weight:700; margin-right:6px; padding:4px 10px;">B</button>
+    <button type="button" onclick="wrapSelection('*')" style="font-style:italic; padding:4px 10px;">I</button>
+  </div>
+  <textarea id="f-content" id="content-editor" rows="16" placeholder="Write your post here...
 
 Separate paragraphs with a blank line — each blank line becomes a new paragraph on the site.
 
@@ -363,6 +367,17 @@ if (presetTags.includes(post.tag)) {
     renderSidebar();
     selectPost(id);
   }
+  function wrapSelection(marker) {
+  const textarea = document.getElementById('f-content');
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = textarea.value;
+  const selected = text.slice(start, end) || 'text';
+  textarea.value = text.slice(0, start) + marker + selected + marker + text.slice(end);
+  textarea.focus();
+  textarea.selectionStart = start + marker.length;
+  textarea.selectionEnd = start + marker.length + selected.length;
+}
 function handleTagChange() {
   const select = document.getElementById('f-tag');
   const custom = document.getElementById('f-tag-custom');
