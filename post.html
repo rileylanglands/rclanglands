@@ -51,10 +51,12 @@
 
       document.title = `${post.title} — R.C. Langlands`;
 
-     function formatInline(text) {
+function formatInline(text) {
   return text
+    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/\n/g, '<br>');
 }
 
 const paragraphs = post.content
