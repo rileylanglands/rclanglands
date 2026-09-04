@@ -229,16 +229,18 @@
               <label for="f-title">Post title</label>
               <input type="text" id="f-title" placeholder="Your journal post title" />
             </div>
-            <div class="form-row">
-              <label for="f-tag">Category</label>
-              <select id="f-tag">
-                <option>Writing life</option>
-                <option>Process</option>
-                <option>Books I love</option>
-                <option>The Seasons series</option>
-                <option>Notes from the classroom</option>
-              </select>
-            </div>
+    <div class="form-row">
+  <label for="f-tag">Category</label>
+  <select id="f-tag" onchange="handleTagChange()">
+    <option>Writing life</option>
+    <option>Process</option>
+    <option>Books I love</option>
+    <option>The Seasons series</option>
+    <option>Notes from the classroom</option>
+    <option value="__custom__">+ Add a new category…</option>
+  </select>
+  <input type="text" id="f-tag-custom" placeholder="Type your new category" style="display:none; margin-top:8px;" />
+</div>
           </div>
           <div class="form-row">
             <label for="f-preview">Preview text <span style="font-weight:400;text-transform:none;letter-spacing:0">(shown on homepage — 1–2 sentences)</span></label>
@@ -334,7 +336,18 @@ Take your time. This is your space."></textarea>
     document.getElementById('editor-empty').style.display = 'none';
     document.getElementById('editor-form-wrap').style.display = 'block';
     document.getElementById('f-title').value = post.title;
-    document.getElementById('f-tag').value = post.tag;
+const tagSelect = document.getElementById('f-tag');
+const tagCustom = document.getElementById('f-tag-custom');
+const presetTags = Array.from(tagSelect.options).map(o => o.value).filter(v => v !== '__custom__');
+if (presetTags.includes(post.tag)) {
+  tagSelect.value = post.tag;
+  tagCustom.style.display = 'none';
+  tagCustom.value = '';
+} else {
+  tagSelect.value = '__custom__';
+  tagCustom.style.display = 'block';
+  tagCustom.value = post.tag;
+}
     document.getElementById('f-preview').value = post.preview;
     document.getElementById('f-content').value = post.content;
     document.getElementById('f-date').value = post.date;
@@ -350,7 +363,26 @@ Take your time. This is your space."></textarea>
     renderSidebar();
     selectPost(id);
   }
+function handleTagChange() {
+  const select = document.getElementById('f-tag');
+  const custom = document.getElementById('f-tag-custom');
+  custom.style.display = select.value === '__custom__' ? 'block' : 'none';
+  if (select.value === '__custom__') custom.focus();
+}
 
+function getSelectedTag() {
+  const select = document.getElementById('f-tag');
+  if (select.value !== '__custom__') return select.value;
+  const custom = document.getElementById('f-tag-custom').value.trim();
+  if (custom && !Array.from(select.options).some(o => o.value === custom)) {
+    const opt = document.createElement('option');
+    opt.value = custom;
+    opt.textContent = custom;
+    select.insertBefore(opt, select.lastElementChild);
+  }
+  if (custom) select.value = custom;
+  return custom || 'Writing life';
+}
   function savePost(publish) {
     if (!activeId) return;
     const idx = posts.findIndex(p => p.id === activeId);
@@ -362,7 +394,7 @@ Take your time. This is your space."></textarea>
     posts[idx] = {
       ...posts[idx],
       title,
-      tag: document.getElementById('f-tag').value,
+     tag: getSelectedTag(),
       preview: document.getElementById('f-preview').value.trim(),
       content: document.getElementById('f-content').value.trim(),
       date: document.getElementById('f-date').value,
