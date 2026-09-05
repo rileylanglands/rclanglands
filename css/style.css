@@ -139,7 +139,7 @@ section { padding: 5rem 3rem; }
 .newsletter-form input::placeholder { color: rgba(168,201,172,0.4); }
 .newsletter-form input:focus { border-color: rgba(168,201,172,0.6); }
 .newsletter-form button { font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--forest-pale); color: var(--forest-darkest); padding: 0.75rem 1.4rem; border-radius: 4px; border: none; cursor: pointer; transition: background 0.2s; }
-.newsletter-form button:hover { background: var(--forest-mist); 
+.newsletter-form button:hover { background: var(--forest-mist); }
 #newsletter {
   padding: 1.5rem 3rem;
   display: flex;
@@ -158,7 +158,6 @@ section { padding: 5rem 3rem; }
   font-size: 18px;
   margin: 0;
   white-space: nowrap;
-}                      
 }
 
 /* FOOTER */
