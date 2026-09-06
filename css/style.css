@@ -187,6 +187,11 @@ footer { background: var(--forest-darkest); padding: 2rem 3rem; display: flex; j
   .post-body { padding: 2.5rem 1.5rem; }
   footer { padding: 1.5rem; flex-direction: column; text-align: center; }
   .footer-links { justify-content: center; }
+  #newsletter { padding: 2.5rem 1.5rem; }
+  #newsletter .newsletter-card { padding: 2rem 1.5rem; }
+  #mlb2-45593874.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow label p {
+    margin: 0 !important;
+  }
 }
 
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
