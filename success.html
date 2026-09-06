@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <style>
     .welcome-page {
-      min-height: 100vh;
+      min-height: 60vh;
       background: var(--forest-dark);
       display: flex;
       align-items: center;
@@ -48,6 +48,20 @@
 </head>
 <body>
 
+<nav>
+  <a href="index.html" class="nav-logo">R.C. Langlands</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#books">Books</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#journal">Musings</a></li>
+    <li class="mobile-only"><a href="index.html#newsletter">Stay in the story</a></li>
+  </ul>
+  <a href="index.html#newsletter" class="nav-cta">Stay in the story</a>
+</nav>
+
 <div class="welcome-page">
   <div class="welcome-content">
     <div class="section-label">You're in</div>
@@ -59,6 +73,31 @@
     </div>
   </div>
 </div>
+
+<footer>
+  <div class="footer-brand">R.C. Langlands</div>
+  <div class="footer-links">
+    <a href="mailto:riley_lang@icloud.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 R.C. Langlands. All rights reserved.</div>
+</footer>
+
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
 
 </body>
 </html>
