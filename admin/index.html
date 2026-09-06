@@ -248,9 +248,18 @@
           </div>
      <div class="form-row">
   <label for="f-content">Post content <span style="font-weight:400;text-transform:none;letter-spacing:0">(separate paragraphs with a blank line — select text and click B or I to format it)</span></label>
-  <div class="editor-toolbar" style="margin-bottom:6px;">
-    <button type="button" onclick="wrapSelection('**')" style="font-weight:700; margin-right:6px; padding:4px 10px;">B</button>
-    <button type="button" onclick="wrapSelection('*')" style="font-style:italic; padding:4px 10px;">I</button>
+   <div class="editor-toolbar" style="margin-bottom:6px; display:flex; flex-wrap:wrap; gap:6px;">
+    <button type="button" onclick="wrapSelection('**')" style="font-weight:700; padding:4px 10px;" title="Bold">B</button>
+    <button type="button" onclick="wrapSelection('*')" style="font-style:italic; padding:4px 10px;" title="Italic">I</button>
+    <button type="button" onclick="insertHeading('##')" style="padding:4px 10px;" title="Heading">H2</button>
+    <button type="button" onclick="insertHeading('###')" style="padding:4px 10px;" title="Subheading">H3</button>
+    <button type="button" onclick="wrapSelection2('[left]','[/left]')" style="padding:4px 10px;" title="Align left">◧</button>
+    <button type="button" onclick="wrapSelection2('[center]','[/center]')" style="padding:4px 10px;" title="Align center">▦</button>
+    <button type="button" onclick="wrapSelection2('[right]','[/right]')" style="padding:4px 10px;" title="Align right">◨</button>
+    <button type="button" onclick="wrapSelection2('[display]','[/display]')" style="padding:4px 10px;" title="Display font">Aa</button>
+    <button type="button" onclick="wrapSelection2('[sans]','[/sans]')" style="padding:4px 10px;" title="Sans-serif font">Aa</button>
+    <button type="button" onclick="document.getElementById('image-file-picker').click()" style="padding:4px 10px;" title="Insert image">🖼</button>
+    <input type="file" id="image-file-picker" accept="image/*" style="display:none" onchange="insertImageMarkdown(this)">
   </div>
  <textarea id="f-content" id="content-editor" rows="16" placeholder="Write your post here...
 
