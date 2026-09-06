@@ -387,6 +387,44 @@ function handleTagChange() {
   custom.style.display = select.value === '__custom__' ? 'block' : 'none';
   if (select.value === '__custom__') custom.focus();
 }
+function wrapSelection2(prefix, suffix) {
+  const textarea = document.getElementById('f-content');
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = textarea.value;
+  const selected = text.slice(start, end) || 'text';
+  textarea.value = text.slice(0, start) + prefix + selected + suffix + text.slice(end);
+  textarea.focus();
+  textarea.selectionStart = start + prefix.length;
+  textarea.selectionEnd = start + prefix.length + selected.length;
+}
+
+function insertHeading(hashes) {
+  const textarea = document.getElementById('f-content');
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = textarea.value;
+  const selected = text.slice(start, end) || 'Heading text';
+  const snippet = `${hashes} ${selected}`;
+  textarea.value = text.slice(0, start) + snippet + text.slice(end);
+  textarea.focus();
+  textarea.selectionStart = start + hashes.length + 1;
+  textarea.selectionEnd = start + snippet.length;
+}
+
+function insertImageMarkdown(input) {
+  if (!input.files || !input.files[0]) return;
+  const filename = input.files[0].name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9.\-_]/g, '');
+  const textarea = document.getElementById('f-content');
+  const start = textarea.selectionStart;
+  const text = textarea.value;
+  const snippet = `![](images/musings/${filename})`;
+  textarea.value = text.slice(0, start) + snippet + text.slice(start);
+  textarea.focus();
+  textarea.selectionStart = textarea.selectionEnd = start + 2;
+  input.value = '';
+  alert(`Don't forget: also upload "${filename}" to images/musings/ on GitHub with this exact filename, or the photo won't show up.`);
+}
 
 function getSelectedTag() {
   const select = document.getElementById('f-tag');
