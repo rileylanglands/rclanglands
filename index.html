@@ -6,13 +6,26 @@
   <title>R.C. Langlands — Author</title>
   <meta name="description" content="R.C. Langlands — author of the Seasons series, middle grade fiction from Queensland, Australia." />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="R.C. Langlands — Author of the Seasons Series" />
+  <meta property="og:description" content="Middle grade fiction from Queensland, Australia — stories of atmosphere, hospitality, and wonder." />
+  <meta property="og:image" content="https://rclanglands.rileslanglands.workers.dev/images/author-photo.jpg" />
+  <meta property="og:url" content="https://rclanglands.rileslanglands.workers.dev/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="R.C. Langlands — Author of the Seasons Series" />
+  <meta name="twitter:description" content="Middle grade fiction from Queensland, Australia — stories of atmosphere, hospitality, and wonder." />
+  <meta name="twitter:image" content="https://rclanglands.rileslanglands.workers.dev/images/author-photo.jpg" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
 <nav>
   <a href="index.html" class="nav-logo" id="siteTitle"></a>
-  <ul class="nav-links">
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
     <li><a href="#books">Books</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#journal">Musings</a></li>
@@ -877,6 +890,24 @@
   function formatDate(d) {
     return new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
   }
+</script>
+
+<script>
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
 </script>
 
 </body>
