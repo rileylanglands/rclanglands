@@ -42,6 +42,28 @@ nav {
 .nav-links a:hover::after { width: 100%; }
 .nav-cta { font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: var(--forest-mid); color: var(--cream); padding: 0.5rem 1.2rem; border-radius: 4px; text-decoration: none; transition: background 0.2s; }
 .nav-cta:hover { background: var(--forest-light); }
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--forest-pale);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.nav-toggle.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
 /* HERO */
 .hero { min-height: 90vh; display: grid; grid-template-columns: 1.1fr 0.9fr; position: relative; overflow: hidden; }
@@ -186,8 +208,23 @@ footer { background: var(--forest-darkest); padding: 2rem 3rem; display: flex; j
 .footer-copy { font-family: var(--sans); font-size: 11px; color: rgba(168,201,172,0.2); width: 100%; text-align: center; padding-top: 1rem; border-top: 1px solid rgba(168,201,172,0.08); }
 
 @media (max-width: 768px) {
-  nav { padding: 1rem 1.5rem; }
-  .nav-links { display: none; }
+  nav { padding: 1rem 1.5rem; flex-wrap: wrap; }
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--forest-darkest);
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(168,201,172,0.15);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links li { width: 100%; }
+  .nav-links a { display: block; padding: 0.9rem 1.5rem; }
   .hero { grid-template-columns: 1fr; min-height: auto; }
   .hero-left { padding: 3rem 1.5rem; }
   .hero-left::after { display: none; }
@@ -207,3 +244,13 @@ footer { background: var(--forest-darkest); padding: 2rem 3rem; display: flex; j
 }
 
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ACCESSIBILITY: keyboard focus states */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--forest-pale);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
