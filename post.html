@@ -54,16 +54,31 @@
 function formatInline(text) {
   return text
     .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" loading="lazy">')
+    .replace(/\[display\](.+?)\[\/display\]/g, '<span class="font-display">$1</span>')
+    .replace(/\[sans\](.+?)\[\/sans\]/g, '<span class="font-sans">$1</span>')
     .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/\n/g, '<br>');
 }
 
+function renderBlock(raw) {
+  const text = raw.trim();
+  const h3Match = text.match(/^###\s+(.*)$/);
+  if (h3Match) return `<h3>${formatInline(h3Match[1])}</h3>`;
+  const h2Match = text.match(/^##\s+(.*)$/);
+  if (h2Match) return `<h2>${formatInline(h2Match[1])}</h2>`;
+  const alignMatch = text.match(/^\[(center|left|right)\]([\s\S]*)\[\/\1\]$/);
+  if (alignMatch) {
+    return `<p style="text-align:${alignMatch[1]}">${formatInline(alignMatch[2].trim())}</p>`;
+  }
+  return `<p>${formatInline(text)}</p>`;
+}
+
 const paragraphs = post.content
   .split('\n\n')
   .filter(p => p.trim())
-  .map(p => `<p>${formatInline(p.trim())}</p>`)
+  .map(renderBlock)
   .join('\n');
 
       document.getElementById('post-content').innerHTML = `
