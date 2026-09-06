@@ -64,6 +64,7 @@ nav {
 .nav-toggle.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
 .nav-toggle.open span:nth-child(2) { opacity: 0; }
 .nav-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.mobile-only { display: none; }
 
 /* HERO */
 .hero { min-height: 90vh; display: grid; grid-template-columns: 1.1fr 0.9fr; position: relative; overflow: hidden; }
@@ -198,6 +199,21 @@ section { padding: 5rem 3rem; }
   max-width: 400px;
   margin: 0 auto;
 }
+/* Fix vendor form using an unloaded font instead of the site's own */
+#mlb2-45593874.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow input {
+  font-family: var(--sans) !important;
+  background-color: var(--cream) !important;
+  border-color: rgba(168,201,172,0.35) !important;
+}
+#mlb2-45593874.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-fieldRow input::placeholder {
+  color: rgba(26,26,20,0.4) !important;
+}
+#mlb2-45593874.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-checkboxRow label p {
+  font-family: var(--sans) !important;
+}
+#mlb2-45593874.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button {
+  font-family: var(--sans) !important;
+}
 
 /* FOOTER */
 footer { background: var(--forest-darkest); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
@@ -210,6 +226,8 @@ footer { background: var(--forest-darkest); padding: 2rem 3rem; display: flex; j
 @media (max-width: 768px) {
   nav { padding: 1rem 1.5rem; flex-wrap: wrap; }
   .nav-toggle { display: flex; }
+  .nav-cta { display: none; }
+  .mobile-only { display: block !important; }
   .nav-links {
     display: none;
     position: absolute;
