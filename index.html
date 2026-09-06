@@ -51,8 +51,7 @@
   <h2 class="section-title">Four seasons. Four stories.</h2>
   <div class="divider"></div>
   <p class="books-intro">The Seasons series follows one extraordinary journey told across four books — each one named for a season, each one a world of its own.</p>
-  <div class="books-grid">
-    <div class="books-grid" id="books-grid"></div>
+  <div class="books-grid" id="books-grid"></div>
 </section>
 
 <section id="about">
@@ -830,29 +829,6 @@
     });
 
 
-  // Load main site content (hero + about)
-  fetch('content/site.json')
-    .then(res => res.json())
-    .then(data => {
-
-      // HERO
-      document.getElementById('heroTitle').textContent = data.hero.title;
-      document.getElementById('heroTagline').textContent = data.hero.tagline;
-      document.getElementById('heroDesc').textContent = data.hero.description;
-
-      // ABOUT
-      document.getElementById('about1').textContent = data.about[0];
-      document.getElementById('about2').textContent = data.about[1];
-      document.getElementById('about3').textContent = data.about[2];
-
-      // Optional: site title in nav (you have this ID already)
-      document.getElementById('siteTitle').textContent = data.hero.title;
-
-    })
-    .catch(err => {
-      console.log("Site content failed to load", err);
-    });
-
   fetch('content/books.json')
   .then(res => res.json())
   .then(data => {
@@ -887,6 +863,7 @@
     document.getElementById('heroTitle').textContent = data.hero.title;
     document.getElementById('heroTagline').textContent = data.hero.tagline;
     document.getElementById('heroDesc').textContent = data.hero.description;
+    document.getElementById('siteTitle').textContent = data.hero.title;
 
     // ABOUT
     document.getElementById('about1').textContent = data.about[0];
