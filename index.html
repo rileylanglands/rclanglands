@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>R.C. Langlands — Author</title>
@@ -870,23 +871,34 @@
         </div>
       </div>
     `).join('');
+  })
+  .catch(err => {
+    console.log("Books content failed", err);
+    document.getElementById('books-grid').innerHTML = '<p style="color:rgba(168,201,172,0.5);">Book details coming soon.</p>';
   });
 
   fetch('content/site.json')
   .then(res => res.json())
   .then(data => {
+    try {
+      // HERO
+      if (data.hero) {
+        document.getElementById('heroEyebrow').textContent = data.hero.eyebrow ?? document.getElementById('heroEyebrow').textContent;
+        document.getElementById('heroTitle').textContent = data.hero.title ?? document.getElementById('heroTitle').textContent;
+        document.getElementById('heroTagline').textContent = data.hero.tagline ?? document.getElementById('heroTagline').textContent;
+        document.getElementById('heroDesc').textContent = data.hero.description ?? document.getElementById('heroDesc').textContent;
+        document.getElementById('siteTitle').textContent = data.hero.title ?? document.getElementById('siteTitle').textContent;
+      }
 
-    // HERO
-    document.getElementById('heroEyebrow').textContent = data.hero.eyebrow;
-    document.getElementById('heroTitle').textContent = data.hero.title;
-    document.getElementById('heroTagline').textContent = data.hero.tagline;
-    document.getElementById('heroDesc').textContent = data.hero.description;
-    document.getElementById('siteTitle').textContent = data.hero.title;
-
-    // ABOUT
-    document.getElementById('about1').textContent = data.about[0];
-    document.getElementById('about2').textContent = data.about[1];
-    document.getElementById('about3').textContent = data.about[2];
+      // ABOUT
+      if (data.about) {
+        document.getElementById('about1').textContent = data.about[0] ?? document.getElementById('about1').textContent;
+        document.getElementById('about2').textContent = data.about[1] ?? document.getElementById('about2').textContent;
+        document.getElementById('about3').textContent = data.about[2] ?? document.getElementById('about3').textContent;
+      }
+    } catch (err) {
+      console.log("Error applying site content", err);
+    }
 
   })
   .catch(err => console.log("Site content failed", err));
