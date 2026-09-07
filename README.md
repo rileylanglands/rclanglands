@@ -30,7 +30,7 @@ rclanglands/
 
 This site is hosted on **Cloudflare Workers** (not Netlify), connected directly to this GitHub repository. Every time you commit a change to the `main` branch here on GitHub, Cloudflare automatically detects it and redeploys the live site — usually within a minute or two, no manual steps needed.
 
-Live site: https://rclanglands.rileslanglands.workers.dev
+Live site: https://rclanglands.com
 
 If you ever want to add a custom domain (e.g. `rclanglands.com`):
 1. Buy the domain from a registrar (e.g. Namecheap, GoDaddy)
@@ -43,7 +43,7 @@ If you ever want to add a custom domain (e.g. `rclanglands.com`):
 
 ### Using the admin panel
 
-1. Go to `yoursite.workers.dev/admin` in your browser (replace with your actual domain)
+1. Go to `rclanglands.com/admin` in your browser
 2. Log in with your admin password (see "Changing your admin password" below)
 3. Click **+ New post**, write your post using the toolbar (bold, italic, headings, alignment, fonts, images), click **Publish**
 4. The admin panel will download a new `posts.json` file to your computer containing all your posts

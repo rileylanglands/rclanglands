@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rclanglands.rileslanglands.workers.dev/sitemap.xml
+Sitemap: https://rclanglands.com/sitemap.xml
