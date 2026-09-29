@@ -50,7 +50,7 @@
     </div>
   </div>
   <div class="hero-right">
-    <img src="images/author-photo.jpg" alt="R.C. Langlands — author photo" />
+    <img src="images/hero-landscape.jpg" alt="A gum tree framing a misty green valley in the Queensland countryside" />
   </div>
 </div>
 
@@ -855,8 +855,8 @@
     const grid = document.getElementById('books-grid');
 
     grid.innerHTML = data.books.map(book => `
-      <div class="book-card">
-        <div class="book-cover ${book.coverClass}">
+      <a class="book-card" href="book.html?id=${book.id}">
+        <div class="book-cover ${book.coverClass}" ${book.coverImage ? `style="background-image:url('${book.coverImage}');background-size:cover;background-position:center;"` : ''}>
           <div class="cover-texture"></div>
           <div class="cover-season">${book.season}</div>
           <div class="cover-tag">${book.tag}</div>
@@ -870,7 +870,7 @@
             ${book.status === "wip" ? "In progress" : "Planned"}
           </span>
         </div>
-      </div>
+      </a>
     `).join('');
   })
   .catch(err => {

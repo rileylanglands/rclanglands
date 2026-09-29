@@ -87,6 +87,14 @@ const paragraphs = post.content
   .map(renderBlock)
   .join('\n');
 
+const resourcesHTML = (post.resources && post.resources.length > 0) ? `
+  <div class="post-resources">
+    <h3>Downloadable resources</h3>
+    <ul>
+      ${post.resources.map(r => `<li><a href="${r.file}" download>↓ ${r.label}</a></li>`).join('')}
+    </ul>
+  </div>` : '';
+
       const published = posts.filter(p => p.published);
       const currentIndex = published.findIndex(p => p.id === id);
       const prevPost = currentIndex > 0 ? published[currentIndex - 1] : null;
@@ -111,6 +119,7 @@ const paragraphs = post.content
         <div class="post-body">
       <a href="index.html#journal" class="back-link">← Back to Musings</a>
           ${paragraphs}
+          ${resourcesHTML}
           ${prevNextHTML}
         </div>
       `;

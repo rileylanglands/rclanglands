@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book — R.C. Langlands</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <meta name="theme-color" content="#1a2e1e" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">R.C. Langlands</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#books">Books</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#journal">Musings</a></li>
+    <li class="mobile-only"><a href="index.html#newsletter">Stay in the story</a></li>
+  </ul>
+  <a href="index.html#newsletter" class="nav-cta">Stay in the story</a>
+</nav>
+
+<div id="book-content">
+  <!-- Loaded dynamically -->
+</div>
+
+<footer>
+  <div class="footer-brand">R.C. Langlands</div>
+  <div class="footer-links">
+    <a href="mailto:riley@rclanglands.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 R.C. Langlands. All rights reserved.</div>
+</footer>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+
+  function formatInline(text) {
+    return text
+      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" loading="lazy">')
+      .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\n/g, '<br>');
+  }
+
+  function renderSample(raw) {
+    return raw.split('\n\n').filter(p => p.trim()).map(p => `<p>${formatInline(p.trim())}</p>`).join('\n');
+  }
+
+  Promise.all([
+    fetch('content/books.json').then(r => r.json()),
+    fetch('content/events.json').then(r => r.json()).catch(() => ({ events: [] }))
+  ]).then(([bookData, eventData]) => {
+    const book = bookData.books.find(b => b.id === id);
+    const content = document.getElementById('book-content');
+
+    if (!book) {
+      content.innerHTML = `
+        <div class="post-hero">
+          <p style="color:rgba(168,201,172,0.6); font-family: var(--sans); font-size:14px;">Book not found.</p>
+        </div>`;
+      return;
+    }
+
+    document.title = `${book.title} — R.C. Langlands`;
+
+    const hasPurchase = book.purchaseLinks && book.purchaseLinks.length > 0;
+    const hasReviews = book.reviews && book.reviews.length > 0;
+    const hasSample = book.sampleChapter && book.sampleChapter.trim().length > 0;
+    const event = book.eventId ? (eventData.events || []).find(e => e.id === book.eventId) : null;
+
+    const purchaseHTML = hasPurchase ? `
+      <div class="book-section">
+        <h2>Where to buy</h2>
+        <div class="purchase-links">
+          ${book.purchaseLinks.map(p => `<a class="btn-primary" href="${p.url}" target="_blank" rel="noopener">${p.retailer}</a>`).join('')}
+        </div>
+      </div>` : `
+      <div class="book-section book-placeholder">
+        <h2>Where to buy</h2>
+        <p>Purchase links will appear here closer to release.</p>
+        <a class="btn-ghost" href="index.html#newsletter">Get notified when it's ready</a>
+      </div>`;
+
+    const reviewsHTML = hasReviews ? `
+      <div class="book-section">
+        <h2>Praise for ${book.title}</h2>
+        <div class="review-list">
+          ${book.reviews.map(r => `
+            <blockquote class="review-quote">
+              <p>&ldquo;${r.quote}&rdquo;</p>
+              <cite>${r.source}</cite>
+            </blockquote>
+          `).join('')}
+        </div>
+      </div>` : '';
+
+    const sampleHTML = hasSample ? `
+      <div class="book-section">
+        <h2>Read a sample</h2>
+        <div class="sample-chapter">
+          ${renderSample(book.sampleChapter)}
+        </div>
+      </div>` : '';
+
+    const eventHTML = event ? `
+      <div class="book-section book-event-callout">
+        <h2>Join the launch</h2>
+        <p>${event.date}${event.location ? ' · ' + event.location : ''}</p>
+        <a class="btn-primary" href="event.html?id=${event.id}">Event details &amp; RSVP</a>
+      </div>` : '';
+
+    content.innerHTML = `
+      <div class="post-hero">
+        <div class="post-tag">${book.label}</div>
+        <h1 class="post-title">${book.title}</h1>
+        ${book.description ? `<p class="post-date" style="max-width:600px;line-height:1.7;">${book.description}</p>` : ''}
+      </div>
+      <div class="post-body">
+        <a href="index.html#books" class="back-link">← Back to the series</a>
+        ${purchaseHTML}
+        ${reviewsHTML}
+        ${sampleHTML}
+        ${eventHTML}
+      </div>
+    `;
+  }).catch(() => {
+    document.getElementById('book-content').innerHTML = `
+      <div class="post-hero">
+        <p style="color:rgba(168,201,172,0.6);">Unable to load this book.</p>
+      </div>`;
+  });
+</script>
+
+<script>
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+
+</body>
+</html>
