@@ -100,7 +100,7 @@ section { padding: 5rem 3rem; }
 #books { background: var(--cream-deep); }
 .books-intro { font-size: 16px; color: var(--ink-soft); line-height: 1.75; max-width: 520px; margin-bottom: 3rem; }
 .books-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.5rem; min-height: 320px; overflow-anchor: none; }
-.book-card { background: var(--cream); border: 1px solid var(--parchment); border-radius: 8px; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s; }
+.book-card { background: var(--cream); border: 1px solid var(--parchment); border-radius: 8px; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s; display: block; text-decoration: none; color: inherit; }
 .book-card:hover { transform: translateY(-5px); box-shadow: 0 14px 36px rgba(52,92,58,0.13); }
 .book-cover { width: 100%; height: 190px; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 1.1rem; position: relative; overflow: hidden; }
 .book-cover.spring { background: var(--forest-mid); }
@@ -238,6 +238,30 @@ section { padding: 5rem 3rem; }
 #mlb2-45593874.ml-form-embedContainer .ml-form-embedWrapper .ml-form-embedBody .ml-form-embedSubmit button {
   font-family: var(--sans) !important;
 }
+
+/* BOOK & EVENT PAGES */
+.book-section { margin: 0 0 3rem; padding-top: 2rem; border-top: 1px solid var(--parchment); }
+.book-section:first-of-type { border-top: none; padding-top: 0; }
+.book-section h2 { font-family: var(--serif); font-size: 26px; font-weight: 400; color: var(--ink); margin-bottom: 1rem; }
+.book-placeholder p { font-size: 15px; color: var(--ink-soft); margin-bottom: 1.25rem; }
+.purchase-links { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+.review-list { display: flex; flex-direction: column; gap: 1.5rem; }
+.review-quote { border-left: 3px solid var(--forest-mid); padding-left: 1.25rem; margin: 0; }
+.review-quote p { font-family: var(--body); font-style: italic; font-size: 17px; color: var(--ink-muted); margin-bottom: 0.5rem; }
+.review-quote cite { font-family: var(--sans); font-size: 12px; font-style: normal; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.sample-chapter p { font-size: 17px; line-height: 1.9; color: var(--ink-muted); margin-bottom: 1.5rem; }
+.book-event-callout { background: var(--cream-deep); border-radius: 8px; padding: 2rem; border-top: none; }
+.book-event-callout p { color: var(--ink-soft); margin-bottom: 1rem; }
+.rsvp-embed { max-width: 480px; }
+.post-body .book-section:has(.rsvp-embed) p,
+.post-body > p { font-size: 16px; line-height: 1.8; color: var(--ink-muted); margin-bottom: 1.5rem; }
+
+/* RESOURCES (Musings posts) */
+.post-resources { background: var(--cream-deep); border: 1px solid var(--parchment); border-radius: 8px; padding: 1.75rem 2rem; margin: 2.5rem 0; }
+.post-resources h3 { font-family: var(--serif); font-size: 18px; font-weight: 400; color: var(--ink); margin-bottom: 1rem; }
+.post-resources ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.post-resources a { font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--forest); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+.post-resources a:hover { color: var(--forest-mid); text-decoration: underline; }
 
 /* FOOTER */
 footer { background: var(--forest-darkest); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
