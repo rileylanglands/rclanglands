@@ -1,40 +1,64 @@
 {
   "books": [
     {
+      "id": "book-1",
       "season": "Summer",
       "label": "Book one — Summer",
       "title": "Title to be revealed",
       "description": "",
       "status": "wip",
       "coverClass": "summer",
-      "tag": "Book one · Cover coming soon"
+      "tag": "Book one · Cover coming soon",
+      "coverImage": "",
+      "purchaseLinks": [],
+      "reviews": [],
+      "sampleChapter": "",
+      "eventId": null
     },
     {
+      "id": "book-2",
       "season": "Autumn",
       "label": "Book two — Autumn",
       "title": "Coming soon",
       "description": "",
       "status": "planned",
       "coverClass": "autumn",
-      "tag": "Book two · Coming soon"
+      "tag": "Book two · Coming soon",
+      "coverImage": "",
+      "purchaseLinks": [],
+      "reviews": [],
+      "sampleChapter": "",
+      "eventId": null
     },
     {
+      "id": "book-3",
       "season": "Winter",
       "label": "Book three — Winter",
       "title": "Coming soon",
       "description": "",
       "status": "planned",
       "coverClass": "winter",
-      "tag": "Book three · Coming soon"
+      "tag": "Book three · Coming soon",
+      "coverImage": "",
+      "purchaseLinks": [],
+      "reviews": [],
+      "sampleChapter": "",
+      "eventId": null
     },
     {
+      "id": "book-4",
       "season": "Spring",
       "label": "Book four — Spring",
       "title": "Coming soon",
       "description": "",
       "status": "planned",
       "coverClass": "spring",
-      "tag": "Book four · Coming soon"
+      "tag": "Book four · Coming soon",
+      "coverImage": "",
+      "purchaseLinks": [],
+      "reviews": [],
+      "sampleChapter": "",
+      "eventId": null
     }
   ]
 }
