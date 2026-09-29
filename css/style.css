@@ -69,7 +69,7 @@ nav {
 /* HERO */
 .hero { min-height: 90vh; display: grid; grid-template-columns: 1.1fr 0.9fr; position: relative; overflow: hidden; }
 .hero-left { background: var(--forest-darkest); padding: 5rem 3rem; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 1; }
-.hero-left::after { content: ''; position: absolute; top: 0; right: -60px; width: 120px; height: 100%; background: var(--forest-darkest); clip-path: polygon(0 0, 40% 0, 100% 100%, 0 100%); z-index: 2; }
+.hero-left::after { content: ''; position: absolute; top: 0; right: -28px; width: 70px; height: 100%; background: var(--forest-darkest); clip-path: polygon(0 0, 40% 0, 100% 100%, 0 100%); z-index: 2; opacity: 0.7; }
 .hero-eyebrow { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--forest-pale); margin-bottom: 1.25rem; animation: fadeUp 0.6s ease both; }
 .hero-name { font-family: var(--serif); font-size: clamp(36px, 4vw, 54px); font-weight: 400; color: var(--forest-pale); line-height: 1.1; margin-bottom: 0.4rem; animation: fadeUp 0.6s 0.1s ease both; }
 .hero-tagline-title { font-family: var(--serif); font-size: clamp(26px, 3vw, 40px); font-weight: 400; font-style: italic; color: var(--forest-light); line-height: 1.2; margin-bottom: 1.75rem; animation: fadeUp 0.6s 0.15s ease both; }
@@ -81,7 +81,7 @@ nav {
 .btn-ghost:hover { border-color: var(--forest-pale); background: rgba(168,201,172,0.08); }
 .hero-right { position: relative; overflow: hidden; animation: fadeUp 0.9s 0.2s ease both; }
 .hero-right img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; filter: saturate(0.9) contrast(1.05); }
-.hero-right::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, var(--forest-darkest) 0%, transparent 30%); z-index: 1; }
+.hero-right::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, var(--forest-darkest) 0%, rgba(26,46,30,0.45) 12%, transparent 32%); z-index: 1; }
 
 /* STRIP */
 .series-strip { background: var(--forest); padding: 2rem 3rem; display: flex; align-items: center; gap: 3rem; flex-wrap: wrap; }
